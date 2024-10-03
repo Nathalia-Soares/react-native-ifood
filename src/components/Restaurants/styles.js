@@ -17,16 +17,6 @@ export const RestaurantList = styled.ScrollView`
   margin-top: 10px
 `;
 
-export const Item = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: row;
-  padding: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  margin-top: 5px;
-  margin-right: 15px
-`;
-
 export const ItemImage = styled.Image`
   width: 60px;
   height: 60px;
@@ -68,4 +58,16 @@ export const Delay = styled.Text`
   margin-top: 15px;
   font-size: 14px;
   color: #999
+`;
+
+export const Item = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 5px;
+  margin-right: 15px;
+  background-color: ${props => props.variant === 'B' ? '#f8f8f8' : 'transparent'}; // Fundo destacado para B
+  border-color: ${props => props.variant === 'B' ? '#FF7C01' : 'rgba(0, 0, 0, 0.1)'}; // Borda colorida para B
 `;

@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { colorRed } from '../../utils/colors';
-import
-  {
-    Container,
-    Location,
-    AddressMenu
-  } from './styles';
+import { colorRed, colorBlue } from '../../utils/colors';
+import { getTestVariant } from '../../utils/testAB';
+import {
+  Container,
+  Location,
+  AddressMenu
+} from './styles';
 
 export default function Address() {
+  const [variant, setVariant] = useState('A'); // estado para o teste A/B
+
+  useEffect(() => {
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
+  }, []);
+
   return (
     <Container>
       <AddressMenu>
@@ -18,7 +25,8 @@ export default function Address() {
         <MaterialIcons
           name="keyboard-arrow-down"
           size={20}
-          color={ colorRed } />
+          color={variant === 'A' ? colorRed : colorBlue}
+        />
       </AddressMenu>
     </Container>
   );

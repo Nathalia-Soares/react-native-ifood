@@ -3,6 +3,7 @@ import { withNavigation } from 'react-navigation';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import api from '../../../services/api';
+import { getTestVariant } from '../../../utils/testAB';
 import
   {
     Container,
@@ -15,6 +16,7 @@ import
 
 function Person() {
   const [profile, setProfile] = useState({});
+  const [variant, setVariant] = useState('A'); // Estado para o teste A/B
 
   useEffect(() => {
     async function loadProfile() {
@@ -22,6 +24,10 @@ function Person() {
       const response = await api.get('profile');
       setProfile(response.data);
     }
+
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
+
     loadProfile();
   }, []);
 
@@ -31,13 +37,15 @@ function Person() {
         <Avatar source={{ uri: profile.avatar_url }} />
         <Info>
           <Name>{ profile.name }</Name>
-          <Message>Editar perfil</Message>
+          {/* Alterar o texto baseado no grupo A/B */}
+          <Message>{ variant === 'A' ? 'Editar perfil' : 'Atualizar informações' }</Message>
         </Info>
 
         <MaterialIcons
           name="keyboard-arrow-right"
           size={20}
-          color="#999" />
+          color="#999"
+        />
       </ProfileButton>
     </Container>
   );

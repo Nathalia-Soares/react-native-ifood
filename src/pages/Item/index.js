@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import
@@ -27,10 +27,18 @@ import
     WarningText
   } from './styles';
 
+import { getTestVariant } from '../../utils/testAB';
+
 // navigation prop
 export default function Item({ navigation }) {
   // Obter param. 'item'
   const item = navigation.getParam('item');
+  const [variant, setVariant] = useState('A'); // Estado para o teste A/B
+
+  useEffect(() => {
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
+  }, []);
 
   return (
     <Container>
@@ -65,58 +73,30 @@ export default function Item({ navigation }) {
           <WarningText>OPCIONAL</WarningText>
         </Warning>
       </DrinkHeader>
-      <DrinkItem>
-        <LeftHeader>
-          <DrinkTitle>Coca-cola 600ml</DrinkTitle>
-          <DrinkPrice>+ R$ 6,00</DrinkPrice>
-        </LeftHeader>
-        <MaterialIcons
-          name="add"
-          size={22}
-          color="#000"
-        />
-      </DrinkItem>
 
-      <DrinkItem>
-        <LeftHeader>
-          <DrinkTitle>Fatto Bene uva 600ml</DrinkTitle>
-          <DrinkPrice>+ R$ 8,00</DrinkPrice>
-        </LeftHeader>
-        <MaterialIcons
-          name="add"
-          size={22}
-          color="#000"
-        />
-      </DrinkItem>
-
-      <DrinkItem>
-        <LeftHeader>
-          <DrinkTitle>Fanta uva 300ml</DrinkTitle>
-          <DrinkPrice>+ R$ 4,50</DrinkPrice>
-        </LeftHeader>
-        <MaterialIcons
-          name="add"
-          size={22}
-          color="#000"
-        />
-      </DrinkItem>
-
-      <DrinkItem>
-        <LeftHeader>
-          <DrinkTitle>Poty Guaraná 300ml</DrinkTitle>
-          <DrinkPrice>+ R$ 4,50</DrinkPrice>
-        </LeftHeader>
-        <MaterialIcons
-          name="add"
-          size={22}
-          color="#000"
-        />
-      </DrinkItem>
+      {/* Mudança no Layout dos Itens de Bebida com base na variante */}
+      {[ // Lista de bebidas
+        { title: "Coca-cola 600ml", price: "+ R$ 6,00" },
+        { title: "Fatto Bene uva 600ml", price: "+ R$ 8,00" },
+        { title: "Fanta uva 300ml", price: "+ R$ 4,50" },
+        { title: "Poty Guaraná 300ml", price: "+ R$ 4,50" }
+      ].map((drink, index) => (
+        <DrinkItem key={index}>
+          <LeftHeader>
+            <DrinkTitle>{drink.title}</DrinkTitle>
+            <DrinkPrice>{drink.price}</DrinkPrice>
+          </LeftHeader>
+          <MaterialIcons
+            name="add"
+            size={22}
+            color={variant === 'B' ? "#007BFF" : "#000"}
+          />
+        </DrinkItem>
+      ))}
     </Container>
   );
 }
 
-// navigation prop
 Item.navigationOptions = ({ navigation }) => ({
   headerBackTitleVisible: false,
   title: 'DETALHES DO ITEM',
@@ -128,7 +108,6 @@ Item.navigationOptions = ({ navigation }) => ({
     }
   },
   headerLeft: () => (
-    // Voltar
     <BackButton onPress={() => navigation.goBack()}>
       <MaterialIcons
         name="keyboard-arrow-left"
