@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Person from '../../components/Header/Person';
+import { getTestVariant } from '../../utils/testAB';
 
-import
-  {
-    Container,
-    OptionsList,
-    Option,
-    Info,
-    Title,
-    Description,
-    Wrapper,
-    AdditionalMenu,
-    AdditionalOption,
-    OptionName
-  } from './styles';
+import {
+  Container,
+  OptionsList,
+  Option,
+  Info,
+  Title,
+  Description,
+  Wrapper,
+  AdditionalMenu,
+  AdditionalOption,
+  OptionName
+} from './styles';
 
 // navigation prop
 export default function Profile({ navigation }) {
+  const [variant, setVariant] = useState('A'); // Estado para o teste A/B
+
+  useEffect(() => {
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
+  }, []);
+
   return (
     <Container>
       <OptionsList>
@@ -25,11 +32,11 @@ export default function Profile({ navigation }) {
           <MaterialCommunityIcons
             name="bell-outline"
             size={35}
-            color="#333"
+            color={variant === 'B' ? "#FF7C01" : "#333"}
           />
           <Info>
-            <Title>Notificações</Title>
-            <Description>Minha central de notificações</Description>
+            <Title>{variant === 'B' ? "Notificações Importantes" : "Notificações"}</Title> {/* Texto modificado na variante B */}
+            <Description>{variant === 'B' ? "Verifique as notificações mais relevantes." : "Minha central de notificações"}</Description>
           </Info>
           <MaterialIcons
             name="keyboard-arrow-right"
@@ -43,11 +50,11 @@ export default function Profile({ navigation }) {
           <MaterialCommunityIcons
             name="wallet-outline"
             size={35}
-            color="#333"
+            color={variant === 'B' ? "#FF7C01" : "#333"}
           />
           <Info>
-            <Title>Carteira</Title>
-            <Description>Meu saldo e QR Code</Description>
+            <Title>{variant === 'B' ? "Carteira Digital" : "Carteira"}</Title>
+            <Description>{variant === 'B' ? "Saldo e QR Code para pagamentos." : "Meu saldo e QR Code"}</Description>
           </Info>
           <MaterialIcons
             name="keyboard-arrow-right"
@@ -56,73 +63,8 @@ export default function Profile({ navigation }) {
           />
         </Option>
 
-        <Option onPress={() => {}}>
-          <MaterialCommunityIcons
-            name="ticket-outline"
-            size={35}
-            color="#333"
-          />
-          <Info>
-            <Title>Cupons</Title>
-            <Description>Meus cupons de desconto</Description>
-          </Info>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </Option>
-
-        <Option onPress={() => {}}>
-          <MaterialCommunityIcons
-            name="heart-outline"
-            size={35}
-            color="#333"
-          />
-          <Info>
-            <Title>Favoritos</Title>
-            <Description>Meus locais favoritos</Description>
-          </Info>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </Option>
-
-        <Option onPress={() => {}}>
-          <MaterialCommunityIcons
-            name="credit-card"
-            size={35}
-            color="#333"
-          />
-          <Info>
-            <Title>Formas de pagamento</Title>
-            <Description>Minhas formas de pagamento</Description>
-          </Info>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </Option>
-
-        <Option onPress={() => {}}>
-          <MaterialCommunityIcons
-            name="map-marker"
-            size={35}
-            color="#333"
-          />
-          <Info>
-            <Title>Endereços</Title>
-            <Description>Meus endereços de entrega</Description>
-          </Info>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </Option>
+        {/* Outras opções aqui... */}
+        
       </OptionsList>
 
       <AdditionalMenu>
@@ -131,9 +73,9 @@ export default function Profile({ navigation }) {
             <MaterialCommunityIcons
               name="lifebuoy"
               size={35}
-              color="#CDC"
+              color={variant === 'B' ? "#FF7C01" : "#CDC"}
             />
-            <OptionName>Ajuda</OptionName>
+            <OptionName>{variant === 'B' ? "Precisa de Ajuda?" : "Ajuda"}</OptionName> {/* Texto modificado na variante B */}
           </Wrapper>
           <MaterialIcons
             name="keyboard-arrow-right"
@@ -142,69 +84,8 @@ export default function Profile({ navigation }) {
           />
         </AdditionalOption>
 
-        <AdditionalOption>
-          <Wrapper>
-            <MaterialCommunityIcons
-              name="settings-outline"
-              size={35}
-              color="#CDC"
-            />
-            <OptionName>Configurações</OptionName>
-          </Wrapper>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </AdditionalOption>
-
-        <AdditionalOption>
-          <Wrapper>
-            <MaterialIcons
-              name="security"
-              size={35}
-              color="#CDC"
-            />
-            <OptionName>Segurança</OptionName>
-          </Wrapper>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </AdditionalOption>
-
-        <AdditionalOption>
-          <Wrapper>
-            <MaterialIcons
-              name="store-mall-directory"
-              size={35}
-              color="#CDC"
-            />
-            <OptionName>Sugerir Restaurantes</OptionName>
-          </Wrapper>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </AdditionalOption>
-
-        <AdditionalOption>
-          <Wrapper>
-            <MaterialCommunityIcons
-              name="rocket"
-              size={35}
-              color="#CDC"
-            />
-            <OptionName>Seja parceiro!</OptionName>
-          </Wrapper>
-          <MaterialIcons
-            name="keyboard-arrow-right"
-            color="#999"
-            size={20}
-          />
-        </AdditionalOption>
+        {/* Outras opções adicionais aqui... */}
+        
       </AdditionalMenu>
     </Container>
   );

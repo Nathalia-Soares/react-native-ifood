@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Categories from '../../components/Categories';
@@ -11,20 +11,36 @@ import
     ExportButton
   } from './styles';
 
+import { getTestVariant } from '../../utils/testAB';
+
 export default function Hinting() {
+  const [variant, setVariant] = useState('A');
+
+  useEffect(() => {
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
+  }, []);
+
   return (
     <Container>
-      <Categories />
-      <Restaurants />
+      {/* Alterando a ordem das seções para o grupo B */}
+      {variant === 'B' ? (
+        <>
+          <Restaurants />
+          <Categories />
+        </>
+      ) : (
+        <>
+          <Categories />
+          <Restaurants />
+        </>
+      )}
     </Container>
   );
 }
 
-// Hinting Header
-// navigation prop
 Hinting.navigationOptions = ({ navigation }) => ({
   headerLeft: () => (
-    // Voltar
     <BackButton onPress={() => navigation.goBack()}>
       <MaterialIcons
         name="keyboard-arrow-left"
@@ -32,7 +48,6 @@ Hinting.navigationOptions = ({ navigation }) => ({
         size={35} />
     </BackButton>
   ),
-  // Obter param. categorie da 'promo'
   title: `${navigation.getParam('promo').categorie}`,
   headerRight: () => (
     <ExportButton>

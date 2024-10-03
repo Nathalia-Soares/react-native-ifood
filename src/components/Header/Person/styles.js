@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.SafeAreaView`
-  margin: 0 10px
+  margin: 0 10px;
 `;
 
 export const ProfileButton = styled.TouchableOpacity`
@@ -9,14 +9,14 @@ export const ProfileButton = styled.TouchableOpacity`
   padding: 10px 0px;
   align-items: center;
   justify-content: space-around;
-  width: 362px
+  width: 362px;
 `;
 
 export const Avatar = styled.Image`
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background: #CDC
+  background: #CDC;
 `;
 
 export const Info = styled.View`
@@ -24,10 +24,10 @@ export const Info = styled.View`
 
 export const Name = styled.Text`
   color: #333;
-  font-size: 22px
+  font-size: 22px;
 `;
 
 export const Message = styled.Text`
   font-size: 18px;
-  color: #999
+  color: #999;
 `;

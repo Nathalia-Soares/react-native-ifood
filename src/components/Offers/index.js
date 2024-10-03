@@ -4,35 +4,35 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import api from '../../services/api';
 import { formatNumber } from '../../utils/formatNumber';
-import
-  {
-    Container,
-    Header,
-    Info,
-    Title,
-    SubTitle,
-    SeeMoreButton,
-    SeeMoreText,
-    OfferList,
-    ItemInfo,
-    Item,
-    ItemImage,
-    ItemTitle,
-    ItemPrice,
-    OldPrice,
-    Price
-  } from './styles';
+import { getTestVariant } from '../../utils/testAB'; 
+import { colorRed, colorBlue } from '../../utils/colors'; 
+import {
+  Container,
+  Header,
+  Info,
+  Title,
+  SubTitle,
+  SeeMoreButton,
+  SeeMoreText,
+  OfferList,
+  ItemInfo,
+  Item,
+  ItemImage,
+  ItemTitle,
+  ItemPrice,
+  OldPrice,
+  Price
+} from './styles';
 
 // navigation prop
 function Offers({ navigation }) {
   const [offers, setOffers] = useState([]);
+  const [variant, setVariant] = useState('A'); // Estado para o teste A/B
 
   useEffect(() => {
     async function loadOffers() {
-      // Obter dados da rota 'offers' da api fake
       const response = await api.get('offers');
 
-      // Mapear e associar dados das ofertas da api fake
       const data = response.data.map(offer => ({
         id: offer.id,
         offer_url: offer.offer_url,
@@ -48,10 +48,12 @@ function Offers({ navigation }) {
       setOffers(data);
     }
     loadOffers();
+
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
   }, []);
 
   function handleNavigateItem(item) {
-    // Navegar para Item
     navigation.navigate('Item', { item });
   }
 
@@ -64,26 +66,23 @@ function Offers({ navigation }) {
         </Info>
 
         <SeeMoreButton onPress={() => navigation.navigate('Search')}>
-          <SeeMoreText>Ver mais</SeeMoreText>
+          {/* Alterar a cor com base na variante do teste A/B */}
+          <SeeMoreText style={{ color: variant === 'A' ? colorRed : colorBlue }}>
+            Ver mais
+          </SeeMoreText>
         </SeeMoreButton>
       </Header>
 
       <OfferList horizontal>
-        {/* Mapear ofertas para cada item */}
-        { offers.map(offer => (
-          <Item key={ offer.id } onPress={() => handleNavigateItem(offer)}>
+        {offers.map(offer => (
+          <Item key={offer.id} onPress={() => handleNavigateItem(offer)}>
             <ItemImage source={{ uri: offer.offer_url }} />
             <ItemInfo>
-              <ItemTitle>{ offer.title }</ItemTitle>
+              <ItemTitle>{offer.title}</ItemTitle>
               <ItemPrice>
-                <Price>{ offer.newPrice }</Price>
-                <OldPrice>{ offer.price }</OldPrice>
-
-                <MaterialIcons
-                  name="local-offer"
-                  size={15}
-                  color="#000"
-                />
+                <Price>{offer.newPrice}</Price>
+                <OldPrice>{offer.price}</OldPrice>
+                <MaterialIcons name="local-offer" size={15} color="#000" />
               </ItemPrice>
             </ItemInfo>
           </Item>
@@ -91,6 +90,6 @@ function Offers({ navigation }) {
       </OfferList>
     </Container>
   );
-};
+}
 
 export default withNavigation(Offers);

@@ -90,6 +90,13 @@ export const MenuButton = styled.TouchableOpacity`
   padding: 5px
 `;
 
+export const HelpButton = styled.TouchableOpacity`
+  background: red;
+  border-radius: 4px;
+  padding: 5px;
+`;
+
 export const MenuText = styled.Text`
-  color: red
+  color: red;
+  padding: 5px;
 `;

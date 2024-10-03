@@ -9,7 +9,7 @@ export const Container = styled.View`
 `;
 
 export const Image = styled.Image.attrs({
-  source: no-itens
+  source: noitens
 })`
   width: 250px;
   height: 250px

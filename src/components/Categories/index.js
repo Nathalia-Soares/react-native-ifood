@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import api from '../../services/api';
+import { getTestVariant } from '../../utils/testAB';
 import
   {
     Container,
@@ -14,13 +15,17 @@ import
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
+  const [variant, setVariant] = useState('A'); // Estado para o teste A/B
 
   useEffect(() => {
     async function loadCategories() {
-      // Obter dados da rota 'categories' da api fake
       const response = await api.get('categories');
       setCategories(response.data);
     }
+
+    const testVariant = getTestVariant();
+    setVariant(testVariant);
+
     loadCategories();
   }, []);
 
@@ -32,10 +37,13 @@ export default function Categories() {
 
       <CategoriesList horizontal>
         {/* Mapear categorias para cada item */}
-        { categories.map(item => (
-          <Item key={ item.id }>
-            <ItemImage source={{ uri: item.categorie_url }} />
-            <ItemTitle>{ item.title }</ItemTitle>
+        {categories.map(item => (
+          <Item key={item.id}>
+            <ItemImage
+              source={{ uri: item.categorie_url }}
+              variant={variant}
+            />
+            <ItemTitle>{item.title}</ItemTitle>
           </Item>
         ))}
       </CategoriesList>
